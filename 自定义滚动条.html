@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<style>
+ul{ margin: 0; padding: 0; list-style: none;}
+.box{ width: 100px; height: 300px; border: 1px solid #e5e5e5; position: relative; overflow: hidden;}
+#detail{ padding: 0 15px; position: absolute; top: 0; left: 0;}
+#scroll{ width: 13px; height: 300px; background: #d9d9d9; position: relative; position: absolute; top: 0; right: 0;}
+#scroll a{ position: absolute; left: 1px; width: 11px; cursor: pointer;}
+.up,.down{ height: 13px; background: #fff; }
+.move{ background: #999; top: 14px;}
+.up{top: 1px;}
+.down{ bottom: 1px;}
+</style>
+<body>
+	<div class="box" id="scroll-bar">
+		<ul id="detail">
+			<li>北京</li>
+			<li>上海</li>
+			<li>广州</li>
+			<li>深圳</li>
+			<li>昆明</li>
+			<li>长沙</li>
+			<li>成都</li>
+			<li>重庆</li>
+			<li>海南</li>
+			<li>福州</li>
+			<li>郑州</li>
+			<li>青岛</li>
+			<li>新疆</li>
+			<li>西藏</li>
+			<li>香港</li>
+			<li>澳门</li>
+			<li>台湾</li>
+			<li>黑龙江</li>
+			<li>西安</li>
+			<li>北京</li>
+			<li>上海</li>
+			<li>广州</li>
+			<li>深圳</li>
+			<li>昆明</li>
+			<li>长沙</li>
+			<li>成都</li>
+			<li>重庆</li>
+			<li>海南</li>
+			<li>福州</li>
+			<li>郑州</li>
+			<li>青岛</li>
+			<li>新疆</li>
+			<li>西藏</li>
+			<li>香港</li>
+			<li>澳门</li>
+			<li>台湾</li>
+			<li>黑龙江</li>
+			<li>西安</li>
+		</ul>
+		<div id="scroll">
+			<a href="javascript:" class="up"></a>
+			<a  class="move"></a>
+			<a href="javascript:" class="down"></a>
+		</div>
+	</div>
+</body>
+<script>
+window.onload=function(){
+	var oBar=document.getElementById("scroll-bar");
+	var oDetail=document.getElementById("detail");
+	var oScroll=document.getElementById("scroll");
+	var aA=oScroll.getElementsByTagName("a");
+	aA[1].style.height=oBar.clientHeight/oDetail.clientHeight*oScroll.clientHeight+'px';
+	oBar.onmousewheel=fn1;
+	if(oBar.addEventListener){
+		oBar.addEventListener('DOMMouseScroll',fn1,false)
+	}
+	
+	function fn1(ev){
+		var ev=ev||event;
+		var b=true;
+		if(ev.wheelDelta){
+			b=ev.wheelDelta<0?true:false;
+		}else if(ev.detail){
+			b=ev.detail>0?true:false;
+		}
+		
+		if(b){
+			up();
+		}else{
+			down();
+		}
+		if(ev.preventDefault){
+			ev.preventDefault();
+		}
+		return false;
+	}
+	
+	aA[0].onclick=down;
+	aA[2].onclick=up;
+	
+	aA[1].onmousedown=function(ev){
+		var ev=ev||event;
+		var disY=ev.clientY-this.offsetTop;
+		if(aA[1].setCapture){
+			aA[1].setCapture();
+		}
+		document.onmousemove=function(ev){
+			var ev=ev||event;
+			aA[1].style.top=ev.clientY-disY+'px';
+			var up=oScroll.offsetHeight-aA[1].offsetHeight-aA[2].offsetHeight-1
+			var down=aA[0].offsetHeight+aA[0].offsetTop
+			var a=aA[1].offsetTop/(oScroll.offsetHeight-aA[2].offsetHeight*2-2)
+			oDetail.style.top=-oDetail.offsetHeight*a+'px';
+			if(aA[1].offsetTop>up){
+				aA[1].style.top=up+'px';				
+				oDetail.style.top=-oDetail.offsetHeight+oBar.offsetHeight+'px';
+			}else if(aA[1].offsetTop<down){
+				aA[1].style.top=down+'px';
+				oDetail.style.top=0;
+			}
+					}
+		document.onmouseup=function(){			
+			document.onmousemove=document.onmouseup=null;
+			if(aA[1].releaseCapture){
+				aA[1].releaseCapture()
+			}
+		}
+	}
+	
+	function up(){
+		aA[1].style.top=aA[1].offsetTop+10+'px';
+		var up=oScroll.offsetHeight-aA[1].offsetHeight-aA[2].offsetHeight-1
+		if(aA[1].offsetTop>up){
+			aA[1].style.top=up+'px';
+		}
+		var a=aA[1].offsetTop/(oScroll.offsetHeight-aA[2].offsetHeight*2-2)
+		oDetail.style.top=-oDetail.offsetHeight*a+'px';
+	}
+	
+	function down(){
+		aA[1].style.top=aA[1].offsetTop-10+'px';
+		var down=aA[0].offsetHeight+aA[0].offsetTop
+		if(aA[1].offsetTop<down){
+			aA[1].style.top=down+'px';
+		}
+		a=(aA[1].offsetTop-aA[0].offsetHeight)/oScroll.offsetHeight;
+		oDetail.style.top=-oDetail.offsetHeight*a+'px';
+	}
+}
+</script>
+</html>

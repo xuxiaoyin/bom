@@ -1,0 +1,151 @@
+<html>
+<head>
+	<title></title>
+</head>
+<meta charset="UTF-8"/>
+<style>
+body,ul,p{ margin: 0;}
+ul{ padding: 0; list-style: none;}
+
+#content{ width: 600px; margin: 100px auto;}
+#content p{ text-align: center; color: #fff; line-height: 40px; font-size: 18px;}
+#content .tip{ font-size: 14px;}
+#left,#right{width: 244px;border-radius: 12px; padding: 20px;}
+#left{  background: #30b8c5;  float: left;}
+#right{ float: right;background: #ffbb14; }
+#number,#number1{ height: 46px; padding: 10px; border: 1px solid #fff; border-radius: 8px; margin: 10px 0; }
+#number li{ float:left; margin: 0 2px; width: 33px; position: relative; height: 46px;overflow:hidden;}
+#number li img{ height: 46px; position: absolute;}
+#number li img:nth-of-type(1){ top: 0; left: 0;}
+#number li img:nth-of-type(2){ top: 46px; left: 0;}
+#number1{height: 42px;,color: #f58c42; text-align: center; border:2px solid #f58c42; line-height: 42px; font-size: 24px; background: #fff;}
+</style>
+<body>
+<div id="content">
+	<div id="left">
+		<p>请输入数值</p>
+		<ul id="number">
+			<li><img src="images/number/1.JPG"/><img src="images/number/2.JPG"/></li>
+			<li><img src="images/number/3.JPG"/><img src="images/number/4.JPG"/></li>
+			<li><img src="images/number/0.JPG"/><img src="images/number/1.JPG"/></li>
+			<li><img src="images/number/0.JPG"/><img src="images/number/1.JPG"/></li>
+			<li><img src="images/number/0.JPG"/><img src="images/number/1.JPG"/></li>
+			<li><img src="images/number/0.JPG"/><img src="images/number/1.JPG"/></li>
+		</ul>
+		<p class="tip">可以通过鼠标滚轮改变数值大小</p>
+	</div>
+	<div id="right">
+		<p>请输入数值</p>
+		<p class="tip">可以通过鼠标滚轮改变数值大小</p>
+		<div id="number1">788659</div>
+	</div>
+</div>
+</body>
+<script src="xxy.js">
+</script>
+<script>
+window.onload=function(){
+	var oNumber=document.getElementById("number");
+	var oNumber1=document.getElementById("number1");
+	var aLi=oNumber.getElementsByTagName("li");
+	for (var i=0;i<aLi.length;i++) {
+		aLi[i].onmousewheel=function(ev){
+			var ev=ev||event;
+			fn1(ev,this)
+		}
+		
+		if(aLi[i].addEventListener){
+			aLi[i].addEventListener('DOMMouseScroll',function(ev){
+				var ev=ev||event;
+				fn1(ev,this)
+			},false)
+		}//兼容火狐
+	}
+	
+	oNumber1.onmousewheel=fn2;
+	if(oNumber1.addEventListener){
+		oNumber1.addEventListener('DOMMouseScroll',fn2,false)
+	}
+	
+	function fn2(ev){
+		var ev=ev||event;
+		var b=true;
+		if(ev.wheelDelta){
+			b = ev.wheelDelta < 0 ? true : false; 
+		}else if(ev.detail){
+			b = ev.detail > 0 ? true : false; 
+		}
+		var num=Number(oNumber1.innerHTML);
+		if(b){
+			num++;
+		}else{
+			num--;
+		}
+		oNumber1.innerHTML=num;
+		if(ev.preventDefault){
+			ev.preventDefault();
+		}
+		
+		return false;
+	}
+	
+	
+	function fn1(ev,obj){
+		var aImg=obj.getElementsByTagName("img");
+		var num=Number(aImg[0].getAttribute('src').charAt(14));
+		var b=true;
+		var ev=ev||event;		
+		if(ev.wheelDelta){
+			b=ev.wheelDelta < 0 ? true : false;
+		}else if(ev.detail){
+			b=ev.detail > 0 ? true : false;
+		}//判断上下
+		if(b){
+			n=num+1;
+			n%=10;
+		}else{
+			n=num-1;
+			if(n< 0){
+				n=9;
+			}
+		}//初始化num，n
+		aImg[0].src='images/number/'+num+'.JPG'
+		aImg[1].src='images/number/'+n+'.JPG'
+		if(b){
+			num++;
+			num%=10;
+			mT=-aLi[0].offsetHeight;
+			
+		}else{
+			num--;
+			if(num< 0){
+				num=9;
+			}
+			n=num;
+			mT=aLi[0].offsetHeight;
+			
+		}
+	
+		doMove(aImg[0],'top',mT,10,function(){
+			aImg[0].src='images/number/'+num+'.JPG';
+			aImg[0].style.top=-mT+'px';
+			aImg[1].style.top=0;
+		
+
+		})
+		doMove(aImg[1],'top',0,10,function(){
+			aImg[1].src='images/number/'+n+'.JPG'
+			aImg[1].style.top=-mT+'px';
+			aImg[0].style.top=0;
+
+		})
+		
+		if(ev.preventDefault){
+			ev.preventDefault();
+		}
+		return false;
+		
+	}
+}
+</script>
+</html>

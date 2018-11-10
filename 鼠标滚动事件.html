@@ -1,0 +1,45 @@
+<html>
+<head>
+	<title></title>
+	<meta charset="UTF-8"/>
+</head>
+<style>
+#div{ width: 100px; height: 100px; background: red;}
+</style>
+<body style="height: 2000px;">
+	<div id="div"></div>
+</body>
+<script>
+window.onload=function(){
+	var oDiv=document.getElementById("div");
+	
+	oDiv.onmousewheel=fn1;
+	if(oDiv.addEventListener){
+		oDiv.addEventListener('DOMMouseScroll',fn1,false)
+	}
+	
+	function fn1 (ev) {
+		var ev=ev||event;
+		//alert(ev.wheelDelta);
+		//alert(ev.detail);
+		var b=true;
+		if(ev.wheelDelta){
+			b=ev.wheelDelta > 0 ? true:false;
+		}else if(ev.detail){
+			b=ev.detail<0 ? true:false;
+		}
+		
+		if(b){
+			this.style.height=oDiv.offsetHeight-10+'px';
+		}else{
+			this.style.height=oDiv.offsetHeight+10+'px';
+		}
+		
+		if(ev.preventDefault){
+			ev.preventDefault();
+		}
+		return false;
+	}
+}
+</script>
+</html>

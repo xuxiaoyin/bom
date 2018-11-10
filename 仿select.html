@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<style>
+body{ margin: 0;background: #433dfc;}
+ul{ margin: 0; padding: 0; list-style: none;}
+a{ text-decoration: none; color: #202020;}
+#wrap{ width: 606px; margin: 100px auto; background: #e0e1fe; padding: 10px; border-radius: 40px;}
+.text{ width: 376px; padding: 0 30px 0 70px; height: 60px; background: #d2d3de url(images/search.png) 18px center no-repeat; border-radius: 30px; border: 1px solid #cccdde; outline: none; font-size: 24px; color:#202020; margin-right: 10px;}
+.active{ background: #fff url(images/search.png) 18px center no-repeat; border: 1px solid #ff554d;}
+.btn{ height: 62px; width: 100px; border-radius: 30px; background: #FF554D; color: #fff; border: none; outline: none;
+font-size: 20px;}
+#list { margin-top: 20px; width: 476px; display: none;}
+#list li{ line-height: 54px; font-size: 24px; padding: 0 30px;}
+#list .active{background: #FF0000; border-radius: 27px;}
+#list .active a{ color: #fff;}
+</style>
+<body>
+	<div id="wrap">
+		<div id="text-box"><input type="text" class="text"><input type="button" value="GO" class="btn"></div>
+		<ul id="list">
+			<li><a href="javascript:">html+css</a></li>
+			<li><a href="javascript:">html5+css3</a></li>
+			<li><a href="javascript:">javascript</a></li>
+			<li><a href="javascript:">angular</a></li>
+			<li><a href="javascript:">react</a></li>
+			<li><a href="javascript:">vue</a></li>
+			<li><a href="javascript:">jquery</a></li>
+			<li><a href="javascript:">nodejs</a></li>
+		</ul>
+	</div>
+</body>
+</html>
+<script>
+window.onload=function(){
+	var oBox=document.getElementById("text-box");
+	var aInp=oBox.getElementsByTagName("input");
+	var oList=document.getElementById("list");
+	var aLi=oList.getElementsByTagName("li");
+	var num=0;
+	aInp[0].onfocus=function(){
+		this.className='text active'
+		oList.style.display='block';
+		for (var i=0;i<aLi.length;i++) {
+			aLi[i].index=i;
+			aLi[i].onmouseover=function(){				
+				num=this.index;
+				for (i=0;i<aLi.length;i++) {
+					aLi[i].className=''	;			
+				}
+				this.className='active';
+				aInp[0].value=this.getElementsByTagName("a")[0].innerHTML;
+			}
+			aLi[i].onclick=function(){
+				oList.style.display='none';
+				aInp[0].className='text';
+			}
+		}
+		window.onkeydown=function(ev){
+				var ev=ev||event;
+				//alert(ev.keyCode)
+				switch(ev.keyCode){
+					case 40:
+						num++;
+						num%=aLi.length;
+						aLi[num].className='active';
+						if(num>0){
+							aLi[num-1].className='';
+						}else{
+							aLi[aLi.length-1].className='';
+						}
+						aInp[0].value=aLi[num].getElementsByTagName("a")[0].innerHTML;
+						
+						break;
+					case 13:						
+						oList.style.display='none';
+						aInp[0].className='text';
+					case 38:
+						num--;
+						if(num<0){
+								num=aLi.length-1;
+								aLi[0].className='';
+							}else{
+								aLi[num+1].className='';
+							}
+						aLi[num].className='active';
+//						if(num>aLi.length-1){
+//							aLi[num+1].className='';
+//						}else{
+//							aLi[0].className='';
+//						}						
+						aInp[0].value=aLi[num].getElementsByTagName("a")[0].innerHTML;
+						break;
+				}
+			
+		
+		
+		}
+	}
+	
+	
+}
+</script>

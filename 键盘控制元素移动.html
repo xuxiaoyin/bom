@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<style>
+	body{ margin: 0; position: relative;}
+	#move{ width: 100px; height: 100px; position: absolute; top: 0; left: 0; background: red;}
+</style>
+<body>
+	<div id="move"></div>
+</body>
+<script>
+window.onload=function(){
+	var oMove=document.getElementById("move");
+	window.onkeydown=function(ev){
+		var ev=ev||event;
+		var screenW=document.documentElement.clientWidth||document.body.clientWidth;
+		var screenH=document.documentElement.clientHeight||document.body.clientHeight;
+		//alert(ev.keyCode)
+		switch(ev.keyCode){
+			case 37:
+			 	if(oMove.offsetLeft<=0){
+			 		oMove.style.left=0
+			 	}else{
+					oMove.style.left=oMove.offsetLeft-10+'px';
+				}
+				break;
+			case 38:
+				if(oMove.offsetTop<=0){
+			 		oMove.style.top=0
+			 	}else{
+					oMove.style.top=oMove.offsetTop-10+'px';
+				}
+				break;
+			case 39:
+			 	if(oMove.offsetLeft>=screenW-oMove.offsetWidth){
+			 		oMove.style.left=screenW-oMove.offsetWidth+'px';
+			 		//alert(screenW-oMove.offsetWidth)
+			 	}else{
+					oMove.style.left=oMove.offsetLeft+10+'px';
+				}
+				break;
+			case 40:
+				if(oMove.offsetTop>=screenH-oMove.offsetHeight){
+			 		oMove.style.top=screenH-oMove.offsetHeight+'px';
+			 	}else{
+					oMove.style.top=oMove.offsetTop+10+'px';
+				}
+				break;
+		}
+	}
+}
+</script>
+</html>

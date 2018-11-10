@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<style>
+body{ margin: 0;}
+a{ text-decoration: none; color: #202020;}
+#menu{ padding: 10px 20px; border: 1px solid #f38d8e; box-shadow: 0 0 4px rgba(243,140,144,05); position: absolute; display: none;}
+#menu a{ display: block;line-height: 30px; color: #F38D8E;}
+</style>
+<body>
+	<div id="menu">
+		<a href="javascript:">下载</a>
+		<a href="javascript:">删除</a>
+		<a href="javascript:">移动到…</a>
+		<a href="javascript:">重命名</a>
+	</div>
+</body>
+<script>
+window.onload=function(){
+	var oMenu=document.getElementById("menu")
+	var aA=oMenu.getElementsByTagName("a");
+	window.oncontextmenu=function(ev){
+		ev=ev||event;
+		oMenu.style.top=ev.clientY+'px';
+		oMenu.style.left=ev.clientX+'px';
+		oMenu.style.display='block';
+		return false
+	}
+	
+
+	for(var i=0;i<aA.length;i++){
+		aA[i].onclick=function(ev){
+		var ev=ev||event;
+			for(i=0;i<aA.length;i++){
+				aA[i].style.background='';
+			}
+			ev.cancelBubble = true;
+			this.style.background='#fcdde0';
+		}
+	}
+	
+	
+	window.onclick=function(){
+		setTimeout(function(){oMenu.style.display='none';
+		},200)
+	}
+}
+</script>
+</html>

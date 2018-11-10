@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<style>
+body{ margin: 0;}
+ul{ margin: 0; padding: 0; list-style: none;}
+#wrap{ width: 800px; margin:50px auto; position: relative;}
+#list{position: relative; width: 800px; overflow: hidden; height: 600px;}
+#list li{ position: absolute; top: 0; left: 0;}
+.btn{ position: relative;top:-366px; }
+.btn a{ position: absolute; width: 132px; height: 132px; top: 0; }
+#next{background: url(images/next.png) no-repeat; right: 10px;}
+#pre{background: url(images/prev.png) no-repeat; left: 10px;}
+</style>
+<script  src="xxy.js"></script>
+<script>
+window.onload=function(){
+	var oList=document.getElementById("list");
+	var aLi=oList.getElementsByTagName("li");
+	var oNext=document.getElementById("next");
+	var oPrev=document.getElementById("pre");
+	var num=aLi.length-1;
+	var onOff=true;
+	oNext.onclick=function(){
+		change('left',oList.offsetWidth);
+	}
+	
+	oPrev.onclick=function(){
+		change('left',-oList.offsetWidth);
+	}
+	
+	window.onkeydown=function(ev){
+		var ev=event||ev;
+		switch(ev.keyCode){
+			case 37:
+				change('left',-oList.offsetWidth);
+			case 38:
+				change('top',-oList.offsetHeight);
+			case 39:
+				change('left',oList.offsetWidth);
+			case 40:
+				change('top',oList.offsetHeight);
+		}
+	}
+	
+	oList.onmousedown=function(ev){
+		ev=ev||event;
+		var oImg=aLi[num].getElementsByTagName("img")[0];
+		var disX=ev.clientX-this.offsetLeft;
+		var disY=ev.clientY-this.offsetTop;
+		
+		if(oList.setCapture){
+			oList.setCapture();
+		}
+		document.onmousemove=function(ev){
+			var ev=ev||event;
+			aLi[num].style.left=ev.clientX-disX+'px';
+			aLi[num].style.top=ev.clientY-disY+'px';
+		}
+		document.onmouseup = function() {
+			var L=Math.abs(aLi[num].offsetLeft);
+			var h=Math.abs(aLi[num].offsetTop)
+			if(aLi[num].offsetLeft>0&&aLi[num].offsetLeft>h){
+				aLi[num].style.top=0;
+				change('left',oList.offsetWidth);
+			}else if(aLi[num].offsetLeft<0&&L>h){
+				aLi[num].style.top=0;
+				change('left',-oList.offsetWidth);
+			}else if(aLi[num].offsetTop>0&&L<aLi[num].offsetTop){
+				aLi[num].style.left=0;
+				change('top',oList.offsetHeight);
+			}else if(aLi[num].offsetTop<0&&L<h){
+				aLi[num].style.left=0;
+				change('top',-oList.offsetHeight);
+			}
+			document.onmousemove = document.onmouseup = null;
+			//释放全局捕获 releaseCapture();
+			if ( oList.releaseCapture ) {
+				oList.releaseCapture();
+			}
+		}
+		
+		return false;
+	}
+	
+	function change(attr,tagget){
+		if(onOff){
+			onOff=false;
+			doMove(aLi[num],attr,tagget,120,function(){
+				oList.insertBefore(aLi[num],oList.firstElementChild);
+				oList.firstElementChild.style[attr]=0;
+				onOff=true;
+			})
+		}
+	}
+}
+</script>
+<body>
+<div id="wrap">
+	<ul id="list">
+		<li><img src="images/1.png"/></li>
+		<li><img src="images/2.png"/></li>
+		<li><img src="images/3.png"/></li>
+		<li><img src="images/4.png"/></li>
+		<li><img src="images/5.png"/></li>
+	</ul>
+	<div class="btn">
+		<a href="javascript:" id="next"></a>
+		<a href="javascript:" id="pre"></a>
+	</div>
+</div>
+</body>
+</html>

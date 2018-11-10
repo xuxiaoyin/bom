@@ -1,0 +1,52 @@
+<html>
+<head>
+	<title></title>
+</head>
+<meta charset="UTF-8"/>
+<style>
+body{ margin:0; background: #422347;}
+#wrap{ width: 1000px; margin: 100px auto 0 auto;}
+#small{  height: 290px; background: url(images/small.png) no-repeat; width: 400px;}
+#big{ width: 300px; height: 300px; border-radius: 50%; background: #fff; overflow: hidden; margin-left: 200px;}
+#small,#big{ position: relative; float: left;}
+#small-pic{ position: relative; left: 54px; top: 22px; width: 330px; height: 182px; overflow: hidden;}
+#small-pic img{ width: 330px;}
+#big-pic{ position: absolute;}
+#move{ width: 70px; height: 70px; background: rgba(0,0,0,.5); border-radius: 50%; position: absolute; top: 0;}
+</style>
+<body>
+<div id="wrap">
+	<div id="small">
+		<div id="small-pic">
+			<img src="images/big.png" />
+			<div id="move"></div>
+		</div>
+	</div>
+	<div id="big">
+		<div id="big-pic">
+			<img src="images/big.png" />
+		</div>
+	</div>
+</div>
+</body>
+<script>
+window.onload=function(){
+	var oSpic=document.getElementById("small-pic");
+	var oBpic=document.getElementById("big-pic");
+	var oPic=oBpic.getElementsByTagName("img")[0];
+	var oMove=document.getElementById("move");
+	
+	oSpic.onmousemove=function(ev){
+		var ev=event||ev;
+		var oT=this.offsetTop+this.parentNode.offsetTop;
+		var oL=this.offsetLeft+this.parentNode.offsetLeft;
+		var oMovet=ev.clientY-oT-oMove.offsetHeight/2
+		var oMoveL=ev.clientX-oL-oMove.offsetWidth/2
+		oMove.style.top=oMovet+'px';
+		oMove.style.left=oMoveL+'px';
+		oBpic.style.top=-(oMove.offsetTop/oSpic.offsetHeight)*oPic.offsetHeight-oMove.offsetHeight/2+'px';
+		oBpic.style.left=-(oMove.offsetLeft/oSpic.offsetWidth)*oPic.offsetWidth-oMove.offsetHeight/2+'px';
+	}
+}
+</script>
+</html>
